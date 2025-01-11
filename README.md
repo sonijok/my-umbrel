@@ -1,2 +1,2 @@
 # my_umbrel
-meu repositorio para umbrel OS
+meu app store proprio para umbrel OS
