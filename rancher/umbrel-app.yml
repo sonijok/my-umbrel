@@ -1,0 +1,47 @@
+manifestVersion: 1.1
+id: rancher
+category: tools
+name: Rancher
+tagline: The open-source Kubernetes management platform
+version: "2.7.0"
+description: >-
+  Rancher é uma plataforma open-source que facilita o gerenciamento de clusters Kubernetes.
+  Ele oferece uma interface intuitiva, integração com provedores de nuvem e
+  suporte a múltiplos clusters, ideal para gerenciar ambientes Kubernetes de forma centralizada.
+
+
+  Características principais:
+  - Gerenciamento de clusters Kubernetes: suporte para EKS, AKS, GKE e clusters on-premises.
+  - Interface gráfica intuitiva para gerenciar recursos do Kubernetes.
+  - Ferramentas de segurança integradas, incluindo RBAC, integração com AD/LDAP e escaneamento de vulnerabilidades.
+  - Suporte para integração CI/CD e deploy de aplicações.
+
+
+  ⚙️ Configuração:
+  Após instalar, acesse o Rancher no endereço `https://<IP_DO_UMBREL>:8443`. O Rancher pode levar alguns minutos para inicializar.
+
+
+  Para começar a usar, siga a documentação oficial no site da Rancher.
+developer: Rancher Labs
+website: https://rancher.com/
+dependencies: []
+repo: https://github.com/rancher/rancher
+support: https://rancher.com/support/
+port: 8443
+gallery:
+  - https://rancher.com/assets/images/screenshots/dashboard.png
+  - https://rancher.com/assets/images/screenshots/cluster-management.png
+path: ""
+defaultUsername: "admin"
+defaultPassword: "gerado-durante-inicializacao"
+torOnly: false
+releaseNotes: >-
+  Esta versão inclui melhorias de estabilidade e novos recursos, incluindo:
+    - Suporte a Kubernetes 1.26 e 1.27.
+    - Melhorias de desempenho em grandes clusters.
+    - Interface redesenhada para gerenciamento de workloads.
+    - Correções de bugs conhecidos.
+
+  Notas de lançamento completas disponíveis em https://rancher.com/docs/rancher/latest/en/release-notes/.
+submitter: RancherCommunity
+submission: https://github.com/rancher/rancher
