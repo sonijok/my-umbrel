@@ -21,7 +21,7 @@ services:
 
   rancher:
     image: rancher/rancher:v2.7.0@sha256:a87a6c4c4648a8a6fed2d3515949e327400a89d9ba0bbb4f089408dd9be6f4fe
-    hostname: my.rancher.koji.com
+    hostname: rancher.meusite.com
     privileged: true
     restart: unless-stopped
     init: true
@@ -31,7 +31,7 @@ services:
       TZ: America/Sao_Paulo
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rancher.rule=Host(`my.rancher.koji.com`)"
+      - "traefik.http.routers.rancher.rule=Host(`rancher.meusite.com`)"
       - "traefik.http.routers.rancher.tls=true"
       - "traefik.http.routers.rancher.tls.certresolver=myresolver"
       - "traefik.http.services.rancher.loadbalancer.server.port=80" # Porta do serviço Rancher
