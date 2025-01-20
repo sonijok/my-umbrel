@@ -1,0 +1,72 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --certificatesresolvers.myresolver.acme.httpchallenge=true
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.email=robson_koji@hotmail.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      - --api.dashboard=true
+      - --log.level=INFO
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - umbrel_main_network
+    restart: unless-stopped
+
+  rancher:
+    image: rancher/rancher:v2.7.0
+    container_name: rancher
+    hostname: rancher.zbxrkgi.xyz
+    privileged: true
+    restart: unless-stopped
+    init: true
+    volumes:
+      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
+    environment:
+      TZ: America/Sao_Paulo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rancher.rule=Host(`rancher.zbxrkgi.xyz`)"
+      - "traefik.http.routers.rancher.entrypoints=websecure"
+      - "traefik.http.routers.rancher.tls=true"
+      - "traefik.http.routers.rancher.tls.certresolver=myresolver"
+      - "traefik.http.services.rancher.loadbalancer.server.port=80"
+    networks:
+      umbrel_main_network:
+        ipv4_address: 10.21.0.30
+
+  password-updater:
+    image: alpine:3.18
+    container_name: rancher_password_updater
+    depends_on:
+      - rancher
+    volumes:
+      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
+      - ./update-manifest.sh:/usr/local/bin/update-manifest.sh
+    entrypoint: >
+      sh -c "
+      while [ ! -f /var/lib/rancher/bootstrap-password ]; do
+        echo 'Aguardando a geração da senha pelo Rancher...';
+        sleep 5;
+      done;
+      echo 'Senha encontrada. Atualizando o manifesto...';
+      /usr/local/bin/update-manifest.sh"
+    restart: on-failure
+    networks:
+      - umbrel_main_network
+
+networks:
+  umbrel_main_network:
+    external: true

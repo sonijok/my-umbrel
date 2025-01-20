@@ -1,38 +1,10 @@
 version: '3.7'
 
 services:
-  traefik:
-    image: traefik:v2.10@sha256:6341b98aec5ec8969b99e9730f4c5b22cca3103d42b6bbe4b7a3c910758fe565
-    container_name: traefik
-    command:
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --providers.docker
-      - --certificatesresolvers.myresolver.acme.httpchallenge=true
-      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.myresolver.acme.email=robson_koji@hotmail.com
-      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-    ports:
-      - "80:80"     # Porta HTTP necessária para o desafio ACME
-      - "443:443"   # Porta HTTPS
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-    networks:
-      - umbrel_main_network
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.zbxrkgi.xyz`)" # (opcional) Expor painel Traefik
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$xyz$$passwordhash" # Substitua por hash gerado
-
   rancher:
-    image: rancher/rancher:v2.7.0@sha256:a87a6c4c4648a8a6fed2d3515949e327400a89d9ba0bbb4f089408dd9be6f4fe
+    image: rancher/rancher:v2.7.0
     container_name: rancher
-    hostname: rancher.zbxrkgi.xyz # Substitua pelo domínio desejado
+    hostname: "${RANCHER_HOSTNAME}"
     privileged: true
     restart: unless-stopped
     init: true
@@ -40,13 +12,6 @@ services:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
     environment:
       TZ: America/Sao_Paulo
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.rancher.rule=Host(`rancher.zbxrkgi.xyz`)" # Substitua pelo domínio configurado no DNS
-      - "traefik.http.routers.rancher.entrypoints=websecure"
-      - "traefik.http.routers.rancher.tls=true"
-      - "traefik.http.routers.rancher.tls.certresolver=myresolver"
-      - "traefik.http.services.rancher.loadbalancer.server.port=80" # Porta interna do Rancher
     networks:
       umbrel_main_network:
         ipv4_address: 10.21.0.30
