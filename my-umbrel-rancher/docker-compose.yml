@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     init: true
     ports:
-      - "8080:80" # Porta para acesso HTTP
+      - "880:80" # Porta para acesso HTTP
       - "8443:443" # Porta para acesso HTTPS (se configurado manualmente)
     volumes:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
