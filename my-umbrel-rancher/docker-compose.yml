@@ -3,7 +3,7 @@ version: '3.7'
 services:
   rancher:
     image: rancher/rancher:latest
-    container_name: rancher
+    container_name: my-umbrel-rancher_1
     hostname: "${RANCHER_HOSTNAME}"
     privileged: true
     restart: unless-stopped
@@ -17,9 +17,9 @@ services:
 
   password-updater:
     image: alpine:3.18
-    container_name: rancher_password_updater
+    container_name: my-umbrel-rancher_password_updater_1
     depends_on:
-      - rancher
+      - my-umbrel-rancher_1
     volumes:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
       - ./update-manifest.sh:/usr/local/bin/update-manifest.sh
