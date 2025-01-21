@@ -1,5 +1,5 @@
 manifestVersion: 1.1
-id: rancher
+id: my-umbrel-rancher
 category: tools
 name: Rancher
 tagline: The open-source Kubernetes management platform
