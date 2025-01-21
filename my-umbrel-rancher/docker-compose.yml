@@ -17,8 +17,7 @@ services:
       TZ: America/Sao_Paulo
     networks:
     networks:
-      umbrel_main_network:
-        ipv4_address: 10.21.0.40
+      - umbrel_main_network
 
 networks:
   umbrel_main_network:
