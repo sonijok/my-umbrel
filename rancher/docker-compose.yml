@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   rancher:
-    image: rancher/rancher:v2.7.0
+    image: rancher/rancher:latest
     container_name: rancher
     hostname: "${RANCHER_HOSTNAME}"
     privileged: true
