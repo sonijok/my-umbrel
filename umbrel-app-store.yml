@@ -1,0 +1,2 @@
+id: "my-umbrel"  #  Escolha o ID da sua loja de aplicativos. Deve conter apenas alfabetos ("a a z") e travessões ("-").
+name: "my-umbrel" # Escolha o nome da sua loja de aplicativos. Ele aparecerá na interface do usuário como "<nome> App Store".
