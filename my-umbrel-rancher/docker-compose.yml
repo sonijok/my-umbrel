@@ -15,26 +15,6 @@ services:
     networks:
       - umbrel_main_network
 
-  password-updater:
-    image: alpine:3.18
-    container_name: my-umbrel-rancher_password_updater_1
-    depends_on:
-      - my-umbrel-rancher_1
-    volumes:
-      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
-      - ./update-manifest.sh:/usr/local/bin/update-manifest.sh
-    entrypoint: >
-      sh -c "
-      while [ ! -f /var/lib/rancher/bootstrap-password ]; do
-        echo 'Aguardando a geração da senha pelo Rancher...';
-        sleep 5;
-      done;
-      echo 'Senha encontrada. Atualizando o manifesto...';
-      /usr/local/bin/update-manifest.sh"
-    restart: on-failure
-    networks:
-      - umbrel_main_network
-
 networks:
   umbrel_main_network:
     external: true
