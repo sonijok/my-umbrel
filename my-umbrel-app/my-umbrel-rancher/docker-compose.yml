@@ -25,4 +25,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.21.0.0/24  # Sub-rede usada pelo Docker
+        - subnet: 10.21.0.0  # Sub-rede usada pelo Docker
