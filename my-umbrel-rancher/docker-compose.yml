@@ -3,23 +3,26 @@ version: '3.7'
 services:
   rancher:
     image: rancher/rancher:latest
-    container_name: my-umbrel-rancher_1
-    hostname: "${RANCHER_HOSTNAME}"
-    privileged: true
+    container_name: rancher
     restart: unless-stopped
-    init: true
     ports:
-      - "880:80" # Porta para acesso HTTP
-      - "8443:443" # Porta para acesso HTTPS (se configurado manualmente)
-    volumes:
-      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
+      - "8443:443"  # Porta para acessar a interface via HTTPS
+      - "880:80"    # Porta para redirecionamento HTTP, se necessário
     environment:
-      TZ: America/Sao_Paulo
-      CATTLE_SERVER_URL: "https://192.168.15.3" # Definindo o URL do servidor
+      CATTLE_SERVER_URL: "https://192.168.15.3:8443" # URL do Rancher para comunicação com agentes
+      CATTLE_AGENT_CONNECT: "true"  # Permite que os agentes se conectem
+    volumes:
+      - rancher-data:/var/lib/rancher  # Persistência de dados
     networks:
-      umbrel_main_network:
-        ipv4_address: 10.21.0.40
+      default:
+        ipv4_address: 10.21.0.40  # IP fixo na sub-rede Docker
+
+volumes:
+  rancher-data:
 
 networks:
-  umbrel_main_network:
-    external: true
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.21.0.0/24  # Sub-rede usada pelo Docker
