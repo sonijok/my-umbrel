@@ -22,9 +22,6 @@ services:
       default:
         ipv4_address: 10.21.0.40  # IP fixo na sub-rede Docker
 
-volumes:
-  rancher-data:
-
 networks:
   umbrel_main_network:
     external: true
