@@ -30,9 +30,9 @@ repo: https://github.com/rancher/rancher
 support: https://rancher.com/support/
 port: 8443
 gallery:
-  - https://ibb.co/JCj0wHV
-  - https://ibb.co/F6WCFvq
-  - https://ibb.co/RzwymTH
+  - https://i.postimg.cc/YqMNW78H/1.png
+  - https://i.postimg.cc/Hn4QhvYR/2.png
+  - https://i.postimg.cc/N0S79rCJ/3.png
 path: ""
 defaultUsername: "admin"
 defaultPassword: "gerado-durante-inicializacao"
@@ -47,3 +47,13 @@ releaseNotes: >-
   Notas de lançamento completas disponíveis em https://rancher.com/docs/rancher/latest/en/release-notes/.
 submitter: RancherCommunity
 submission: https://github.com/rancher/rancher
+
+# Adicionado script para capturar senha de bootstrap
+postInstall:
+  - |
+    # Obter o ID do container do Rancher
+    container_id=$(docker ps -q --filter "name=my-umbrel-rancher")
+    # Capturar a senha de inicializacao
+    password=$(docker logs $container_id 2>&1 | grep "Bootstrap Password:" | awk '{print $NF}')
+    # Atualizar o campo defaultPassword no manifest
+    sed -i "s/defaultPassword: \"gerado-durante-inicializacao\"/defaultPassword: \"$password\"/" /umbrel-app.yml
