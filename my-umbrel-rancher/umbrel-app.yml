@@ -2,7 +2,7 @@ manifestVersion: 1.1
 id: my-umbrel-rancher
 category: tools
 name: Rancher
-icon: https://www.rancher.cn/img/brand-guidelines/assets/logos/svg/color/rancher-logo-stacked-color.svg
+icon: https://www.rancher.cn/img/brand-guidelines/assets/logos/svg/cow/rancher-logo-cow-blue.svg
 tagline: The open-source Kubernetes management platform
 version: "2.7.0"
 description: >-
