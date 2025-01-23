@@ -2,6 +2,7 @@ manifestVersion: 1.1
 id: my-umbrel-rancher
 category: tools
 name: Rancher
+icon: https://github.com/sonijok/my-umbrel-gallery/blob/main/my-umbrel-gallery-rancher/1.svg
 tagline: The open-source Kubernetes management platform
 version: "2.7.0"
 description: >-
@@ -29,8 +30,9 @@ repo: https://github.com/rancher/rancher
 support: https://rancher.com/support/
 port: 8443
 gallery:
-  - https://rancher.com/assets/images/screenshots/dashboard.png
-  - https://rancher.com/assets/images/screenshots/cluster-management.png
+  - https://github.com/sonijok/my-umbrel-gallery/blob/main/my-umbrel-gallery-rancher/1.jpg
+  - https://github.com/sonijok/my-umbrel-gallery/blob/main/my-umbrel-gallery-rancher/2.jpg
+  - https://github.com/sonijok/my-umbrel-gallery/blob/main/my-umbrel-gallery-rancher/3.jpg
 path: ""
 defaultUsername: "admin"
 defaultPassword: "gerado-durante-inicializacao"
