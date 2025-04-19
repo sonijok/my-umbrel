@@ -4,10 +4,10 @@ services:
   app_proxy:
     container_name: rancher_app_proxy_1
     environment:
-      APP_HOST: rancher_server_1         # Nome do serviço do Rancher
-      APP_PORT: 443                      # Porta interna do Rancher (HTTPS)
-      PROXY_PORT: 8443                   # Porta externa que será usada no navegador
-      PROXY_AUTH_ADD: 'false'           # Não forçar autenticação adicional
+      APP_HOST: rancher_server_1
+      APP_PORT: 443
+      PROXY_PORT: 8443
+      PROXY_AUTH_ADD: 'false'
     networks:
       - umbrel_main_network
 
@@ -18,18 +18,25 @@ services:
     privileged: true
     restart: unless-stopped
     init: true
-
     environment:
       TZ: America/Sao_Paulo
       CATTLE_SERVER_URL: "https://rkgi.servehttp.com:8443"
       CATTLE_AGENT_CONNECT: "true"
-
     volumes:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
-
     networks:
       umbrel_main_network:
         ipv4_address: 10.21.0.40
+
+  redirect_proxy:
+    build: ./redirect-proxy
+    container_name: rancher_redirect_http_to_https
+    restart: unless-stopped
+    ports:
+      - "880:80"  # Redireciona HTTP (porta 880) → HTTPS:8443
+    networks:
+      umbrel_main_network:
+        ipv4_address: 10.21.0.41
 
 networks:
   umbrel_main_network:
