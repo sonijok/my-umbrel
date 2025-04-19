@@ -6,37 +6,28 @@ services:
     environment:
       APP_HOST: rancher_server_1
       APP_PORT: 443
-      PROXY_PORT: 8443
       PROXY_AUTH_ADD: 'false'
+    image: getumbrel/nginx-proxy-manager
+    restart: unless-stopped
     networks:
       - umbrel_main_network
 
-  rancher:
+  rancher_server_1:
     image: rancher/rancher:latest
     container_name: rancher_server_1
-    hostname: "${RANCHER_HOSTNAME:-rkgi.servehttp.com}"
+    hostname: ${DEVICE_HOSTNAME:-rkgi.servehttp.com}
     privileged: true
     restart: unless-stopped
     init: true
     environment:
       TZ: America/Sao_Paulo
-      CATTLE_SERVER_URL: "https://rkgi.servehttp.com:8443"
-      CATTLE_AGENT_CONNECT: "true"
     volumes:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
+    ports:
+      - "8443:443"  # expõe diretamente a interface via :8443, como no seu domínio
     networks:
       umbrel_main_network:
         ipv4_address: 10.21.0.40
-
-  redirect_proxy:
-    build: ./redirect-proxy
-    container_name: rancher_redirect_http_to_https
-    restart: unless-stopped
-    ports:
-      - "880:80"  # Redireciona HTTP (porta 880) → HTTPS:8443
-    networks:
-      umbrel_main_network:
-        ipv4_address: 10.21.0.41
 
 networks:
   umbrel_main_network:
