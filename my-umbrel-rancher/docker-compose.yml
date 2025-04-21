@@ -3,31 +3,23 @@ version: '3.7'
 services:
   rancher:
     image: rancher/rancher:latest
-    container_name: my-umbrel-rancher_1
-    hostname: "${RANCHER_HOSTNAME:-rkgi.servehttp.com}"  # Usa domínio customizado, com fallback
-    privileged: true  # Necessário para recursos avançados do Rancher
+    container_name: rancher_server_1
+    hostname: rkgi.servehttp.com
+    privileged: true
     restart: unless-stopped
     init: true
-
     ports:
-      - "8443:443"  # Interface web via HTTPS (recomendada)
-      - "880:80"    # Redirecionamento HTTP opcional (pode ser usado por proxy)
-
+      - "8443:443"
     environment:
-      # Timezone
       TZ: America/Sao_Paulo
-
-      # Define o domínio para acesso via browser e para comunicação com os agentes
-      CATTLE_SERVER_URL: "https://rkgi.servehttp.com:8443"
-      CATTLE_AGENT_CONNECT: "true"  # Permite que os agentes iniciem a conexão
-
+      CATTLE_SERVER_URL: "https://rkgi.servehttp.com"
+      CATTLE_AGENT_CONNECT: "true"
     volumes:
-      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher  # Persistência de dados do Rancher
-
+      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
     networks:
       umbrel_main_network:
-        ipv4_address: 10.21.0.40  # IP fixo na sub-rede Docker
+        ipv4_address: 10.21.0.40
 
 networks:
   umbrel_main_network:
-    external: true  # Rede gerenciada externamente (provavelmente pelo Umbrel)
+    external: true
