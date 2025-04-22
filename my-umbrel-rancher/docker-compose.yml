@@ -1,14 +1,13 @@
-version: '3.7'
-
 services:
   app_proxy:
     container_name: rancher_app_proxy_1
     environment:
       APP_HOST: rancher_server_1
-      APP_PORT: 443              # Porta interna (HTTPS)
-      APP_HTTPS: 'true'          # Usa HTTPS internamente
-      PROXY_PORT: 8443           # Expor externamente na porta 8443
+      APP_PORT: 443
+      APP_HTTPS: 'true'
       PROXY_AUTH_ADD: 'false'
+    ports:
+      - "8443:443"  # Aqui está a mágica!
 
   rancher:
     image: rancher/rancher:latest
