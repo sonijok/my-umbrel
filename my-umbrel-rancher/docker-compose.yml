@@ -7,8 +7,8 @@ services:
       APP_HTTPS: 'true'
       PROXY_PORT: 8443
       PROXY_AUTH_ADD: 'false'
-    ports:
-      - "8443:443"  # Aqui está a mágica!
+#    ports:
+#      - "8443:443"  # Aqui está a mágica!
 
   rancher:
     image: rancher/rancher:latest
