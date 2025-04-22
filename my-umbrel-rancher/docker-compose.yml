@@ -4,7 +4,7 @@ services:
     environment:
       APP_HOST: rancher_server_1
       APP_PORT: 80
-      APP_HTTPS: 'false'
+      APP_HTTPS: 'true'
       PROXY_PORT: 8443
       PROXY_AUTH_ADD: 'false'
 #    ports:
