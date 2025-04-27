@@ -18,7 +18,7 @@ services:
       TZ: America/Sao_Paulo
 
       # Define o domínio para acesso via browser e para comunicação com os agentes
-      CATTLE_SERVER_URL: "https://rkgi.servehttp.com"
+      CATTLE_SERVER_URL: "https://rkgi.servehttp.com:8443"
       CATTLE_AGENT_CONNECT: "true"  # Permite que os agentes iniciem a conexão
 
     volumes:
