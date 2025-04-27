@@ -5,10 +5,11 @@ services:
       APP_HOST: rancher_server_1
       APP_PORT: 80
       APP_HTTPS: 'true'
-      PROXY_PORT: 8443
+      PROXY_PORT: 880
       PROXY_AUTH_ADD: 'false'
-#    ports:
-#      - "8443:443"  # Aqui está a mágica!
+    ports:
+      - "8443:443"  # Aqui está a mágica!
+      - "880:80"
 
   rancher:
     image: rancher/rancher:latest
