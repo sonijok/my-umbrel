@@ -1,14 +1,14 @@
-services:
-  app_proxy:
-    container_name: rancher_app_proxy_1
-    environment:
-      APP_HOST: rancher_server_1
-      APP_PORT: 80
-      APP_HTTPS: 'true'
-      PROXY_PORT: 8443
-      PROXY_AUTH_ADD: 'false'
-#    ports:
-#      - "8443:443"  # Aqui está a mágica!
+version: '3.7'
+
+#services:
+#  app_proxy:
+#    container_name: rancher_app_proxy_1
+#    environment:
+#      APP_HOST: rancher_server_1
+#      APP_PORT: 80
+#      APP_HTTPS: 'true'
+#      PROXY_PORT: 880
+#      PROXY_AUTH_ADD: 'false'
 
   rancher:
     image: rancher/rancher:latest
@@ -26,6 +26,10 @@ services:
     networks:
       umbrel_main_network:
         ipv4_address: 10.21.0.40
+
+    ports:
+      - "8443:443"  # Aqui est   a m  gica!
+      - "880:80"
 
 networks:
   umbrel_main_network:
