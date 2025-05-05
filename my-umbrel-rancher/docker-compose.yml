@@ -12,6 +12,7 @@ services:
     ports:
       - "8443:443"  # Interface web via HTTPS (recomendada)
       - "880:80"    # Redirecionamento HTTP opcional (pode ser usado por proxy)
+      - "6443:6443" # comunicacao com api rancher
 
     environment:
       # Timezone
