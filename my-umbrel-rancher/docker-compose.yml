@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   rancher:
-    image: rancher/rancher:v2.7.0@sha256:a87a6c4c4648a8a6fed2d3515949e327400a89d9ba0bbb4f089408dd9be6f4fe
+    image: rancher/rancher:latest
     hostname: "${DEVICE_HOSTNAME}"
     privileged: true
     restart: unless-stopped
