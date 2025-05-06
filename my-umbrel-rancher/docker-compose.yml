@@ -1,34 +1,67 @@
 version: '3.7'
 
 services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.10@sha256:6341b98aec5ec8969b99e9730f4c5b22cca3103d42b6bbe4b7a3c910758fe565
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker
+      - --certificatesresolvers.myresolver.acme.httpchallenge=true
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.email=robson_koji@hotmail.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "880:80"
+      - "8443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - umbrel_main_network
+    restart: unless-stopped
+
   rancher:
-    image: rancher/rancher:v2.7.0
-    container_name: my-umbrel-rancher_1
-    hostname: "${RANCHER_HOSTNAME}"
+    image: rancher/rancher:v2.7.0@sha256:a87a6c4c4648a8a6fed2d3515949e327400a89d9ba0bbb4f089408dd9be6f4fe
+    hostname: "${DEVICE_HOSTNAME}"
     privileged: true
     restart: unless-stopped
     init: true
-    ports:
-      - "8443:443"  # Porta para acessar a interface via HTTPS
-      - "880:80"    # Porta para redirecionamento HTTP, se necessário
-    environment:
-      CATTLE_SERVER_URL: "https://100.70.0.0:8443" # URL do Rancher para comunicação com agentes
-      CATTLE_AGENT_CONNECT: "true"  # Permite que os agentes se conectem
     volumes:
       - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
     environment:
       TZ: America/Sao_Paulo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rancher.rule=Host(${DEVICE_HOSTNAME})"
+      - "traefik.http.routers.rancher.entrypoints=websecure"
+      - "traefik.http.routers.rancher.tls=true"
+      - "traefik.http.routers.rancher.tls.certresolver=myresolver"
     networks:
-      default:
-        ipv4_address: 10.21.0.40  # IP fixo na sub-rede Docker
+      umbrel_main_network:
+        ipv4_address: 10.21.0.30
+
+  password-updater:
+    image: alpine:3.18
+    container_name: rancher_password_updater
+    depends_on:
+      - rancher
+    volumes:
+      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
+      - ./update-manifest.sh:/usr/local/bin/update-manifest.sh
+    entrypoint: >
+      sh -c "
+      while [ ! -f /var/lib/rancher/bootstrap-password ]; do
+        echo 'Aguardando a geração da senha pelo Rancher...';
+        sleep 5;
+      done;
+      echo 'Senha encontrada. Atualizando o manifesto...';
+      /usr/local/bin/update-manifest.sh"
+    restart: on-failure
+    networks:
+      - umbrel_main_network
 
 networks:
   umbrel_main_network:
     external: true
-
-#networks:
-#  default:
-#    driver: bridge
-#    ipam:
-#      config:
-#        - subnet: 10.21.0.0  # Sub-rede usada pelo Docker
