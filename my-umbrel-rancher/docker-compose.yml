@@ -20,28 +20,6 @@ services:
       umbrel_main_network:
         ipv4_address: 10.21.0.40
 
- password-updater:
-    image: alpine:3.18
-    container_name: rancher_password_updater
-    depends_on:
-      - rancher
-    volumes:
-      - ${APP_DATA_DIR}/data/rancher:/var/lib/rancher
-      - ${APP_DATA_DIR}/data:/data
-    entrypoint: >
-      sh -c "
-      while [ ! -f /var/lib/rancher/bootstrap-password ]; do
-        echo 'Aguardando a geracao da senha pelo Rancher...';
-        sleep 5;
-      done;
-      echo 'Senha encontrada. Copiando para /data/rancher-password.txt...';
-      cp /var/lib/rancher/bootstrap-password /data/rancher-password.txt;
-      chmod 644 /data/rancher-password.txt;
-      echo 'Senha salva com sucesso.'"
-    restart: on-failure
-    networks:
-      - umbrel_main_network
-
 networks:
   umbrel_main_network:
     external: true
